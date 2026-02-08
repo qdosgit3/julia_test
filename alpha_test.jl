@@ -12,7 +12,7 @@ function gen_predictive_dist(n ::Int64, m ::Int64, d ::Int64, y ::Int64)
 
     x_range = zeros(UInt64, max_range)
 
-    res = zeros(UInt8, max_range)
+    res = zeros(Int8, max_range)
 
     for i = UInt128(0):UInt128(max_range - 1)
 
@@ -26,7 +26,7 @@ function gen_predictive_dist(n ::Int64, m ::Int64, d ::Int64, y ::Int64)
 
         println(alpha)
 
-        res[i+1] = log2(alpha[y] - log2(sum(alpha_plus_d) + d*n)
+        res[i+1] = round(Int8, (log2(alpha[y] + d) - log2(sum(alpha_plus_d) + d*n)))
 
         x_range[i+1] = i
 
