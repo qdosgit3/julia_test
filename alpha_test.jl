@@ -1,16 +1,18 @@
+using Debugger
 
+function gen_predictive_dist(n ::Int64, m ::Int64, d ::Int64, y ::Int64)
 
-function p_y_given_theta(alpha_len ::Int64, d ::Int64, y ::Int64)
+    alpha = zeros(UInt64, n)
 
-    alpha = zeros(UInt64, alpha_len)
+    alpha_plus_d = zeros(UInt64, n)
 
-    alpha_plus_d = zeros(UInt64, alpha_len)
+    max_range = UInt128((2^m - 1)^n)
 
-    res = zeros(UInt16, 65536^16)
+    res = zeros(UInt8, max_range)
 
-    for i = UInt128(0):2 #UInt128(typemax(UInt128))
+    for i = UInt128(0):UInt128(max_range)
 
-        alpha = generate_permutation(i, alpha_len, 8)
+        alpha = gen_permutation(i, n, m)
 
         for j = 1:length(alpha)
 
@@ -18,14 +20,16 @@ function p_y_given_theta(alpha_len ::Int64, d ::Int64, y ::Int64)
 
         end
 
-        res = sum(alpha_plus_d)
+        res[i+1] = div((alpha[y] + d), (sum(alpha_plus_d) + d*n))
 
     end
+
+    return res
 
 end
 
 
-function generate_permutation(i ::UInt128, n ::Int64, m ::Int64)
+function gen_permutation(i ::UInt128, n ::Int64, m ::Int64)
 
     set = zeros(UInt64, n)
 
@@ -34,10 +38,6 @@ function generate_permutation(i ::UInt128, n ::Int64, m ::Int64)
     a = UInt128(0)
 
     for j = 0:(n-1)
-
-        println(bitstring(and_bits))
-
-        println()
 
         a = and_bits & i
 
@@ -52,6 +52,14 @@ function generate_permutation(i ::UInt128, n ::Int64, m ::Int64)
 end
 
 
-generate_permutation(UInt128(1), 8, 8)
+# println(gen_permutation(UInt128(0x1), 8, 8))
 
-#permutation_generator(8, 100)
+# println(gen_permutation(UInt128(0x1_0000_0000_0000), 8, 16))
+
+@enter res = gen_predictive_dist(6, 5, 20, 1)
+
+for r in res
+
+    println(r)
+
+end
