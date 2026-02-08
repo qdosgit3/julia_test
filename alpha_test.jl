@@ -1,5 +1,7 @@
 # using Debugger
 
+using Plots
+
 function gen_predictive_dist(n ::Int64, m ::Int64, d ::Int64, y ::Int64)
 
     alpha = zeros(UInt64, n)
