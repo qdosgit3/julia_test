@@ -10,7 +10,7 @@ function p_y_given_theta(alpha_len ::Int64, d ::Int64, y ::Int64)
 
     for i = UInt128(0):2 #UInt128(typemax(UInt128))
 
-        alpha = generate_permutation(i, alpha_len)
+        alpha = generate_permutation(i, alpha_len, 8)
 
         for j = 1:length(alpha)
 
@@ -25,17 +25,15 @@ function p_y_given_theta(alpha_len ::Int64, d ::Int64, y ::Int64)
 end
 
 
-function generate_permutation(i ::UInt128, alpha_len ::Int64)
+function generate_permutation(i ::UInt128, n ::Int64, m ::Int64)
 
-    alpha = zeros(UInt64, alpha_len)
+    set = zeros(UInt64, n)
 
-    and_bits = UInt128(0xFFFF)
+    and_bits = UInt128(2^m - 1)
 
     a = UInt128(0)
 
-    shift_size = div(128, alpha_len)
-
-    for j = 0:7
+    for j = 0:(n-1)
 
         println(bitstring(and_bits))
 
@@ -43,17 +41,17 @@ function generate_permutation(i ::UInt128, alpha_len ::Int64)
 
         a = and_bits & i
 
-        alpha[j+1] = a >> (j * shift_size)
+        set[j+1] = a >> (j * m)
         
-        and_bits = and_bits << shift_size
+        and_bits = and_bits << m
 
     end
 
-    return alpha
+    return set
     
 end
 
 
-generate_permutation(UInt128(1), 8)
+generate_permutation(UInt128(1), 8, 8)
 
 #permutation_generator(8, 100)
