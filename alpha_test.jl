@@ -6,7 +6,7 @@ function gen_predictive_dist(n ::Int64, m ::Int64, d ::Int64, y ::Int64)
 
     alpha_plus_d = zeros(UInt64, n)
 
-    max_range = UInt128((2^m - 1)^n)
+    max_range = UInt128((2^m)^n)
 
     res = zeros(UInt8, max_range)
 
