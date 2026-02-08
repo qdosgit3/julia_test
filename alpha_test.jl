@@ -10,7 +10,7 @@ function gen_predictive_dist(n ::Int64, m ::Int64, d ::Int64, y ::Int64)
 
     res = zeros(UInt8, max_range)
 
-    for i = UInt128(0):UInt128(max_range)
+    for i = UInt128(0):UInt128(max_range - 1)
 
         alpha = gen_permutation(i, n, m)
 
@@ -20,11 +20,13 @@ function gen_predictive_dist(n ::Int64, m ::Int64, d ::Int64, y ::Int64)
 
         end
 
+        println(alpha)
+
         res[i+1] = div((sum(alpha_plus_d) + d*n), (alpha[y] + d))
 
         # @bp
 
-        println(i, " ", res[i+1])
+        # println(i, " ", res[i+1])
 
     end
 
@@ -60,10 +62,6 @@ end
 
 # println(gen_permutation(UInt128(0x1_0000_0000_0000), 8, 16))
 
-res = gen_predictive_dist(6, 5, 20, 1)
+#res = gen_predictive_dist(6, 5, 20, 1)
 
-# for r in res
-
-#     println(r)
-
-# end
+res = gen_predictive_dist(3, 2, 1, 1)
