@@ -26,7 +26,7 @@ function gen_predictive_dist(n ::Int64, m ::Int64, d ::Int64, y ::Int64)
 
         println(alpha)
 
-        res[i+1] = round(Float16, (log2(alpha[y] + d) - log2(sum(alpha_plus_d) + d*n)))
+        res[i+1] = (log2(alpha[y] + d) - log2(sum(alpha_plus_d) + d*n))
 
         x_range[i+1] = i
 
