@@ -72,6 +72,6 @@ end
 
 x_range, res = gen_predictive_dist(3, 2, 1, 1)
 
-p = plot(x_range, res, title="Dirichlet plot")
+p = bar(x_range, res, title="Dirichlet plot")
 
-savefig(p, "plot.pdf")
+savefig(p, "bar.pdf")
