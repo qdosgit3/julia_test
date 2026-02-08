@@ -1,4 +1,4 @@
-using Debugger
+# using Debugger
 
 function gen_predictive_dist(n ::Int64, m ::Int64, d ::Int64, y ::Int64)
 
@@ -20,7 +20,11 @@ function gen_predictive_dist(n ::Int64, m ::Int64, d ::Int64, y ::Int64)
 
         end
 
-        res[i+1] = div((alpha[y] + d), (sum(alpha_plus_d) + d*n))
+        res[i+1] = div((sum(alpha_plus_d) + d*n), (alpha[y] + d))
+
+        # @bp
+
+        println(i, " ", res[i+1])
 
     end
 
@@ -56,10 +60,10 @@ end
 
 # println(gen_permutation(UInt128(0x1_0000_0000_0000), 8, 16))
 
-@enter res = gen_predictive_dist(6, 5, 20, 1)
+res = gen_predictive_dist(6, 5, 20, 1)
 
-for r in res
+# for r in res
 
-    println(r)
+#     println(r)
 
-end
+# end
