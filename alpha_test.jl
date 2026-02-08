@@ -10,6 +10,8 @@ function gen_predictive_dist(n ::Int64, m ::Int64, d ::Int64, y ::Int64)
 
     max_range = UInt128((2^m)^n)
 
+    x_range = zeros(UInt64, max_range)
+
     res = zeros(UInt8, max_range)
 
     for i = UInt128(0):UInt128(max_range - 1)
@@ -26,13 +28,15 @@ function gen_predictive_dist(n ::Int64, m ::Int64, d ::Int64, y ::Int64)
 
         res[i+1] = div((sum(alpha_plus_d) + d*n), (alpha[y] + d))
 
+        x_range[i+1] = i
+
         # @bp
 
         # println(i, " ", res[i+1])
 
     end
 
-    return res
+    return x_range, res
 
 end
 
@@ -66,4 +70,8 @@ end
 
 #res = gen_predictive_dist(6, 5, 20, 1)
 
-res = gen_predictive_dist(3, 2, 1, 1)
+x_range, res = gen_predictive_dist(3, 2, 1, 1)
+
+p = plot(x_range, res, title="Dirichlet plot")
+
+savefig(p, "plot.pdf")
