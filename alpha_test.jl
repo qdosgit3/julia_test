@@ -70,7 +70,7 @@ end
 
 #res = gen_predictive_dist(6, 5, 20, 1)
 
-@time x_range, res = gen_predictive_dist(1, 4, 4, 1)
+@time x_range, res = gen_predictive_dist(1, 4, 3, 1)
 
 # println(res)
 
