@@ -12,7 +12,7 @@ function gen_predictive_dist(d ::Int64, m ::Int64, n ::Int64, y ::Int64)
 
     x_range = zeros(UInt64, permutations_n)
 
-    res = zeros(Float64, permutations_n)
+    res = zeros(Float32, permutations_n)
 
     for i = UInt128(0):UInt128(permutations_n - 1)
 
@@ -26,9 +26,7 @@ function gen_predictive_dist(d ::Int64, m ::Int64, n ::Int64, y ::Int64)
 
         # println(alpha)
 
-        # res[i+1] = (alpha[y] + d) / (sum(alpha_plus_d) + d*n)
-
-        res[i+1] = log2(alpha[y] + d) - log2(sum(alpha_plus_d) + d*n)
+        res[i+1] = (alpha[y] + d) / (sum(alpha_plus_d) + d*n)
 
         x_range[i+1] = i
 
@@ -72,10 +70,10 @@ end
 
 #res = gen_predictive_dist(6, 5, 20, 1)
 
-@time x_range, res = gen_predictive_dist(1, 4, 6, 1)
+@time x_range, res = gen_predictive_dist(1, 5, 4, 1)
 
 # println(res)
 
-# p = bar(x_range, res, title="Dirichlet plot")
+p = bar(x_range, res, title="Dirichlet plot")
 
-# savefig(p, "bar.pdf")
+savefig(p, "bar.pdf")
