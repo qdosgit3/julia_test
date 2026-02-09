@@ -2,21 +2,21 @@
 
 using Plots
 
-function gen_predictive_dist(n ::Int64, m ::Int64, d ::Int64, y ::Int64)
+function gen_predictive_dist(d ::Int64, m ::Int64, n ::Int64, y ::Int64)
 
     alpha = zeros(UInt64, n)
 
     alpha_plus_d = zeros(UInt64, n)
 
-    max_range = UInt128((2^m)^n)
+    permutations_n = UInt128((2^m)^n)
 
-    x_range = zeros(UInt64, max_range)
+    x_range = zeros(UInt64, permutations_n)
 
-    res = zeros(Float16, max_range)
+    res = zeros(Float16, permutations_n)
 
-    for i = UInt128(0):UInt128(max_range - 1)
+    for i = UInt128(0):UInt128(permutations_n - 1)
 
-        alpha = gen_permutation(i, n, m)
+        alpha = gen_permutation(i, m, n)
 
         for j = 1:length(alpha)
 
@@ -24,9 +24,9 @@ function gen_predictive_dist(n ::Int64, m ::Int64, d ::Int64, y ::Int64)
 
         end
 
-        println(alpha)
+        # println(alpha)
 
-        @time res[i+1] = (log2(alpha[y] + d) - log2(sum(alpha_plus_d) + d*n))
+        res[i+1] = div((alpha[y] + d), (sum(alpha_plus_d) + d*n))
 
         x_range[i+1] = i
 
@@ -41,7 +41,7 @@ function gen_predictive_dist(n ::Int64, m ::Int64, d ::Int64, y ::Int64)
 end
 
 
-function gen_permutation(i ::UInt128, n ::Int64, m ::Int64)
+function gen_permutation(i ::UInt128, m ::Int64, n ::Int64)
 
     set = zeros(UInt64, n)
 
@@ -70,7 +70,7 @@ end
 
 #res = gen_predictive_dist(6, 5, 20, 1)
 
-@time x_range, res = gen_predictive_dist(3, 2, 1, 1)
+@time x_range, res = gen_predictive_dist(1, 4, 5, 1)
 
 p = bar(x_range, res, title="Dirichlet plot")
 
